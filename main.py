@@ -182,9 +182,10 @@ class Spider(object):
 
         for iSender in self.project.get('sender', {}).get(pActKey, []):
             iSender = deepcopy(iSender)
+            iSender.setdefault('encoding', self.project.get('encoding', 'utf8'))
             iSource = iSender.pop('source', '*' if isinstance(pData, list) else '.')
             iSenderType = iSender.pop('type', 'any')
-            iSenderType.setdefault('encoding', self.project.get('encoding', 'utf8'))
+
             iList = jsonpath(pData, iSource)
             if isinstance(iList, bool):
                 continue
