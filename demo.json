@@ -1,0 +1,129 @@
+{
+	"sender": {
+		"entrance": [{
+			"type": "req",
+			"target": "list",
+			"encoding": "utf8"
+		}],
+		"list": [{
+			"source": "$..nextPage.*",
+			"type": "req",
+			"target": "list",
+			"targetType": "dom",
+			"parameter": ""
+		}, {
+			"source": "$..nextPage.*",
+			"type": "req",
+			"target": "list",
+			"targetType": "dom",
+			"parameter": ""
+		}],
+		"detail": [{
+			"type": "store",
+			"target": "news.163news",
+			"parameter": "url,title,moduleName,detailTitle"
+		}]
+	},
+	"parser": {
+		"entrance": [{
+			"parseType": "xpath",
+			"rule": "//a[contains(@href,'house2010') or contains(@href,'auto_house')]",
+			"out": "any",
+			"target": "parameter",
+			"fetchall": -1,
+			"next": [{
+				"name": "req",
+				"next": [{
+					"name": "url",
+					"parseType": "xpath",
+					"rule": "@href",
+					"out": "url"
+				}]
+			}, {
+				"name": "inherit",
+				"next": [{
+					"name": "moduleName",
+					"parseType": "xpath",
+					"rule": "text()"
+				}]
+			}]
+		}],
+		"list": [{
+			"name": "detail",
+			"parseType": "xpath",
+			"rule": "//div[@class='area_list clearfix']/div[@class='col_l']//h2/a",
+			"fetchall": -1,
+			"next": [{
+				"name": "req",
+				"next": [{
+					"name": "url",
+					"parseType": "xpath",
+					"rule": "@href",
+					"out": "url"
+				}]
+			}, {
+				"name": "inherit",
+				"next": [{
+					"target": "inherit"
+				}, {
+					"name": "title",
+					"parseType": "xpath",
+					"rule": "text()"
+				}]
+			}]
+		}, {
+			"name": "nextPage",
+			"parseType": "xpath",
+			"rule": "//div[@class='list_page']//a[contains(@title,'页')]",
+			"fetchall": -1,
+			"next": [{
+				"name": "req",
+				"next": [{
+					"name": "url",
+					"parseType": "xpath",
+					"rule": "@href",
+					"out": "url"
+				}]
+			}, {
+				"name": "inherit",
+				"target": "inherit"
+			}]
+		}],
+		"detail": [{
+			"target": "inherit"
+		}, {
+			"name": "url",
+			"parseType": "json",
+			"rule": "$.url",
+			"target": "res"
+		}, {
+			"name": "detailTitle",
+			"parseType": "xpath",
+			"rule": "//h1[@class='post_title']/text()"
+		}]
+	},
+	"entrance": {
+		"task": [{
+			"req": {
+				"url": "https://money.163.com",
+				"method": "GET"
+			}
+		}],
+		"inherit": {
+			"key1": "value1"
+		},
+		"encoding": "utf8",
+		"dataType": "dom"
+	},
+	"taskName": "新闻-网易",
+	"flag": 0,
+	"retryTimes": 3,
+	"timeout": 12,
+	"concurrency": 32,
+	"interval": 1,
+	"encoding": "utf8",
+	"resourceKey": "money.163.com",
+	"taskGroup": "news",
+	"taskKey": "news.163.com",
+	"resource": "proxy"
+}
