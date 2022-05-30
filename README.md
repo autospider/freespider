@@ -19,7 +19,7 @@ Freespider是一款新一代网页采集工具，它功能强大，操作简单�
 - [extract.py](http://extract.py) 内容提取模块
 ### 运行方式
 
-  `python -u [main.py](http://main.py/) demo.json`
+  `python -u main.py demo.json`
 
 ### 采集配置工具
   [autospiderHelper](https://github.com/autospider/autospiderHelper)
