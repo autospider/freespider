@@ -67,7 +67,8 @@ def getTaskId(pTask):
 
 def transform(pTask):
     iList, iCharSet = [], pTask.get('encoding', 'utf8')
-    if pTask.get('dataType', 'dom') == 'dom':
+    iDataType = pTask.get('dataType', 'dom').lower()
+    if iDataType == 'dom':
         for iItem in pTask['task']:
             iBody = iItem['res'].pop('body', b'')
             iList.append({
@@ -76,26 +77,32 @@ def transform(pTask):
                 'req': iItem['req'],
                 'inherit': iItem.get('inherit', {})
             })
-    elif pTask.get('dataType', 'dom') == 'json':
-        for iItem in pTask['task']:
-            iBody = iItem['res'].pop('body', b'')
-            iList.append({
-                'parameter': loads(re.sub('[\r\n]+', '', iBody.decode(iCharSet))),
-                'res': iItem['res'],
-                'req': iItem['req'],
-                'inherit': iItem.get('inherit', {})
-            })
     else:
-        for iItem in pTask['task']:
-            iBody = iItem['res'].pop('body', b'')
-            iList.append({
-                'parameter': iBody,
-                'res': iItem['res'],
-                'req': iItem['req'],
-                'inherit': pTask.get('inherit', {})
-            })
-    return iList
+        if iDataType == 'jsonp':
+            for iItem in pTask['task']:
+                iBody = re.findall(br'\(([\s\S]+)\);?\s*$', iItem['res'].pop('body', b''))
+                iItem['res']['body'] = iBody[0] if len(iBody) else b'{}'
+            iDataType = 'json'
 
+        if iDataType == 'json':
+            for iItem in pTask['task']:
+                iBody = iItem['res'].pop('body', b'{}')
+                iList.append({
+                    'parameter': loads(re.sub('[\r\n]+', '', iBody.decode(iCharSet))),
+                    'res': iItem['res'],
+                    'req': iItem['req'],
+                    'inherit': iItem.get('inherit', {})
+                })
+        else:
+            for iItem in pTask['task']:
+                iBody = iItem['res'].pop('body', b'')
+                iList.append({
+                    'parameter': iBody,
+                    'res': iItem['res'],
+                    'req': iItem['req'],
+                    'inherit': pTask.get('inherit', {})
+                })
+    return iList
 
 def doParseStep(pStep, pData, pPrev):
     iParseData = pData.get(pStep.get('target', 'parameter'), pPrev)
