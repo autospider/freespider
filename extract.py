@@ -104,6 +104,7 @@ def transform(pTask):
                 })
     return iList
 
+
 def doParseStep(pStep, pData, pPrev):
     iParseData = pData.get(pStep.get('target', 'parameter'), pPrev)
     iType = pStep.get('parseType', 'any')
