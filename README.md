@@ -12,17 +12,16 @@ Freespider是一款新一代网页采集工具，它功能强大，操作简单�
 
 
 ### 文件结构
-- [demo.json](https://github.com/autospider/freespider/blob/main/demo.json) 采集配置模块
-- [main.py](https://github.com/autospider/freespider/blob/main/main.py) 采集模块
-- [proxy.py](https://github.com/autospider/freespider/blob/main/proxy.py) 代理模块
-- [store.py](https://github.com/autospider/freespider/blob/main/store.py) 存储模块
-- [extract.py](http://extract.py) 内容提取模块
+- [demo.json](https://github.com/autospider/freespider/blob/main/demo.json) 采集配置演示文件，可通过 [spiderHelper](https://github.com/autospider/spiderHelper) 生成;
+- [main.py](https://github.com/autospider/freespider/blob/main/main.py) 采集模块;
+- [proxy.py](https://github.com/autospider/freespider/blob/main/proxy.py) 代理模块;
+- [store.py](https://github.com/autospider/freespider/blob/main/store.py) 存储模块;
+- [extract.py](http://extract.py) 内容提取模块。
 ### 运行方式
 
   `python -u main.py demo.json`
-
 ### 采集配置工具
-  [autospiderHelper](https://github.com/autospider/autospiderHelper)
+  [spiderHelper](https://github.com/autospider/spiderHelper)
 
 ### 许可协议
   该项目在 MIT 许可下获得许可 - 请参阅[LICENSE](https://github.com/autospider/freespider/blob/main/LICENSE) 文件了解详细信息
