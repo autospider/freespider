@@ -166,9 +166,10 @@ class Spider(object):
                 await self.dlCache.push(iTask)
 
     def doParse(self, pTask):
-        iActKey = pTask['actKey']
+        iTask = deepcopy(pTask)
+        iActKey = iTask['actKey']
         iStep = self.project.get('parser', {}).get(iActKey, [])
-        iList = transform(pTask)
+        iList = transform(iTask)
         iResult = []
         for iItem in iList:
             iItem = doParse(iStep, iItem)
